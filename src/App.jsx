@@ -30,6 +30,20 @@ function App() {
 }, []);
 
 
+  // Replace your handle in App.jsx
+const handleSetUserProfile = (profile) => {
+  if (profile) {
+    localStorage.setItem('healthProfile', JSON.stringify(profile));
+    setUserProfile(profile);
+    setUser({ id: profile.id, email: profile.email });
+  } else {
+    localStorage.removeItem('healthProfile');
+    setUserProfile(null);
+    setUser(null);
+  }
+};
+
+
   const handleLogout = () => {
   localStorage.removeItem('healthProfile');
   setUser(null);
@@ -73,9 +87,15 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/auth" element={
-          user ? <Navigate to="/dashboard" replace /> : <Auth setUserProfile={setUserProfile} />
-        } />
+        <Route
+  path="/auth"
+  element={
+    user
+      ? <Navigate to="/dashboard" replace />
+      : <Auth setUserProfile={handleSetUserProfile} />
+  }
+/>
+
         
         <Route path="*" element={
           <div className="flex h-screen bg-gray-50">
